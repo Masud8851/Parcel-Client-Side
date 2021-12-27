@@ -5,16 +5,17 @@ import useFirebase from "../../Hooks/useFirebase";
 
 const Login = () => {
 	const { signInWithGoogle, setUser, setIsLoading } = useFirebase();
+
 	const navigate = useNavigate();
 	const location = useLocation();
-	const url = location.state?.from || "/home";
+	let from = location.state?.from?.pathname || "/";
 
 	const handleGoogleLogin = () => {
 		signInWithGoogle()
 			.then((res) => {
 				setIsLoading(true);
 				setUser(res.user);
-				navigate.push(url);
+				navigate(from, { replace: true });
 			})
 			.catch((err) => console.log(err))
 			.finally(() => {
